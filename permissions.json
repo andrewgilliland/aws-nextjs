@@ -1,0 +1,198 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetBucketLocation",
+        "s3:GetBucketVersioning"
+      ],
+      "Resource": ["arn:aws:s3:::venue-maps-bucket-1234567890"],
+      "Effect": "Allow",
+      "Sid": "AllowS3BucketActions"
+    },
+    {
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:DeleteObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": ["arn:aws:s3:::venue-maps-bucket-1234567890/*"],
+      "Effect": "Allow",
+      "Sid": "AllowS3ObjectActions"
+    },
+    {
+      "Action": [
+        "cloudfront:ListDistributions",
+        "cloudfront:GetDistribution",
+        "cloudfront:CreateInvalidation"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "AllowCloudFrontActions"
+    },
+    {
+      "Sid": "ManageBootstrapStateBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:PutBucketVersioning",
+        "s3:PutBucketNotification",
+        "s3:PutBucketPolicy",
+        "s3:DeleteObject",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:PutObject"
+      ],
+      "Resource": ["arn:aws:s3:::sst-state-*"]
+    },
+    {
+      "Sid": "ManageBootstrapAssetBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:PutBucketVersioning",
+        "s3:PutBucketNotification",
+        "s3:PutBucketPolicy",
+        "s3:DeleteObject",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:PutObject"
+      ],
+      "Resource": ["arn:aws:s3:::sst-asset-*"]
+    },
+    {
+      "Sid": "ManageBootstrapECRRepo",
+      "Effect": "Allow",
+      "Action": ["ecr:CreateRepository", "ecr:DescribeRepositories"],
+      "Resource": ["arn:aws:ecr:us-east-1:829100612065:repository/sst-asset"]
+    },
+    {
+      "Sid": "ManageBootstrapSSMParameter",
+      "Effect": "Allow",
+      "Action": ["ssm:GetParameters", "ssm:PutParameter"],
+      "Resource": [
+        "arn:aws:ssm:us-east-1:829100612065:parameter/sst/passphrase/*",
+        "arn:aws:ssm:us-east-1:829100612065:parameter/sst/bootstrap"
+      ]
+    },
+    {
+      "Sid": "CloudFormationDeployments",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack",
+        "cloudformation:UpdateStack",
+        "cloudformation:DeleteStack",
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:DescribeStackResources",
+        "cloudformation:GetTemplate",
+        "cloudformation:ValidateTemplate"
+      ],
+      "Resource": ["arn:aws:cloudformation:us-east-1:829100612065:stack/sst-*"]
+    },
+    {
+      "Sid": "LambdaManagement",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateFunction",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:DeleteFunction",
+        "lambda:GetFunction",
+        "lambda:ListFunctions",
+        "lambda:AddPermission",
+        "lambda:RemovePermission",
+        "lambda:InvokeFunction"
+      ],
+      "Resource": ["arn:aws:lambda:us-east-1:829100612065:function:sst-*"]
+    },
+    {
+      "Sid": "CloudFrontManagement",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateDistribution",
+        "cloudfront:UpdateDistribution",
+        "cloudfront:DeleteDistribution",
+        "cloudfront:GetDistribution",
+        "cloudfront:GetDistributionConfig",
+        "cloudfront:CreateOriginAccessControl",
+        "cloudfront:GetOriginAccessControl",
+        "cloudfront:DeleteOriginAccessControl",
+        "cloudfront:CreateInvalidation",
+        "cloudfront:CreateCachePolicy",
+        "cloudfront:GetCachePolicy",
+        "cloudfront:UpdateCachePolicy",
+        "cloudfront:DeleteCachePolicy",
+        "cloudfront:ListCachePolicies",
+        "cloudfront:CreateKeyValueStore",
+        "cloudfront:UpdateKeyValueStore",
+        "cloudfront:DeleteKeyValueStore",
+        "cloudfront:DescribeKeyValueStore",
+        "cloudfront:ListKeyValueStores",
+        "cloudfront:CreateFunction",
+        "cloudfront:PublishFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3Management",
+      "Effect": "Allow",
+      "Action": ["s3:*"],
+      "Resource": ["arn:aws:s3:::aws-nextjs-*", "arn:aws:s3:::sst-*"]
+    },
+    {
+      "Sid": "IAMRoleManagement",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy"
+      ],
+      "Resource": ["arn:aws:iam::829100612065:role/sst-*"]
+    },
+    {
+      "Sid": "LogsManagement",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:DeleteLogGroup",
+        "logs:DescribeLogGroups",
+        "logs:PutRetentionPolicy"
+      ],
+      "Resource": [
+        "arn:aws:logs:us-east-1:829100612065:log-group:/aws/lambda/sst-*"
+      ]
+    },
+    {
+      "Sid": "ManageSecrets",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DeleteParameter",
+        "ssm:GetParameter",
+        "ssm:GetParameters",
+        "ssm:GetParametersByPath",
+        "ssm:PutParameter"
+      ],
+      "Resource": ["arn:aws:ssm:us-east-1:829100612065:parameter/sst/*"]
+    },
+    {
+      "Sid": "LiveLambdaSocketConnection",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:EventSubscribe",
+        "appsync:EventPublish",
+        "appsync:EventConnect"
+      ],
+      "Resource": ["*"]
+    }
+  ]
+}
